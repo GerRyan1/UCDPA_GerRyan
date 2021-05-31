@@ -35,7 +35,7 @@ print(nfl_draft.duplicated().sum())
 print(nfl_draft.isnull().sum())
 print(nfl_draft["to"].isnull().sum() / len(nfl_draft))
 
-# Create a new DF of only players with an age listed (to be used for insights later)
+# Create a new DF of only players with an age listed
 nfl_age = nfl_draft.dropna(subset=["age"])
 print(nfl_age.shape)
 
@@ -64,12 +64,14 @@ print(nfl_age.groupby("position")["age"].agg([pct10,pct90]))
 
 # Update "Team" column with recognised Team abreviations 
 nfl_teams_old = list((nfl_draft.groupby("team")[["round"]].count()).index)
+print(nfl_teams_old)
 nfl_teams_modern = ["ARI","ATL","BAL","NE","BUF","CAR","CHI","CIN","CLE","DAL","DEN","DET","GB","HOU","IND","JAX","KC","LAC","LAR","LVR","MIA","MIN","NO","NE","NYG","NYJ","LVR","PHI","ARI","PIT","LVR","LAR","LAC","SEA","SF","LAR","TB","TEN","WAS"]
 nfl_draft["team"] = nfl_draft["team"].replace(nfl_teams_old, nfl_teams_modern)
 print(nfl_draft.head())
 
 # Load dataframe with NFL franchise information and prepare for merging
 nfl_teams = pd.read_csv("nfl_teams.csv")
+print(nfl_teams.head())
 
 # Delete references to teams who have since changed name/location
 nfl_teams = nfl_teams.dropna(subset=["team_division"])
@@ -116,7 +118,7 @@ nfl_grouped = nfl_merge.groupby("team_name").sum()
 plt.barh(nfl_grouped.index[::-1], nfl_grouped["all_pro"][::-1])
 plt.title("'All-Pro' Appearances by Team Drafting", color="blue")
 plt.ylabel("Team", color="blue", fontsize=10)
-plt.yticks(fontsize=8)
+plt.yticks(fontsize=7)
 plt.xlabel("No. of All-Pro appearances by players drafted by this team", color="blue", fontsize=10)
 plt.show()
 
@@ -127,7 +129,7 @@ print(nfl_flop)
 sns.countplot(data=nfl_flop.sort_values("team_name"), y="team_name")
 plt.title("1st and 2nd Round Draft Pick 'Flops' by Team (1970-2016)", color="blue")
 plt.ylabel("Team", color="blue", fontsize=10)
-plt.yticks(fontsize=8)
+plt.yticks(fontsize=7)
 plt.xlabel("Number of 1st and 2nd Round Picks with less than 40 games", color="blue", fontsize=10)
 plt.show()
 
