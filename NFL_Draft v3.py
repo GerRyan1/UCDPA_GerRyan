@@ -59,6 +59,16 @@ nfl_60k = nfl_draft[(nfl_draft["pass_yards"] >= 60000)]
 for lab, row in nfl_60k.iterrows() :
     print(str(lab)+": " + str(row["player"])+" " + str(row["pass_yards"])+" yards")
 
+# Use webscraping to pull Tom Brady's age
+import requests
+from bs4 import BeautifulSoup as bs
+r = requests.get("https://www.nfl.com/players/tom-brady/")
+brady = bs(r.content, "lxml")
+print(type(brady))
+print(brady.title.text)
+brady_stats = brady.findAll('div', {'class':'nfl-c-player-info__value'})
+print(brady_stats[6].text)
+
 # create a function for the top and bottom 10%
 def pct10(column):
     return column.quantile(0.1)
