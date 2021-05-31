@@ -54,6 +54,11 @@ nfl_draft = nfl_draft.fillna(null_dict)
 nfl_draft = nfl_draft.fillna({"college":"unknown"})
 print(nfl_draft.isnull().sum())
 
+# Print a list of all Quarterbacks who have pass yards > 60k yards using iterrows
+nfl_60k = nfl_draft[(nfl_draft["pass_yards"] >= 60000)]
+for lab, row in nfl_60k.iterrows() :
+    print(str(lab)+": " + str(row["player"])+" " + str(row["pass_yards"])+" yards")
+
 # create a function for the top and bottom 10%
 def pct10(column):
     return column.quantile(0.1)
@@ -76,6 +81,11 @@ print(nfl_teams.head())
 # Delete references to teams who have since changed name/location
 nfl_teams = nfl_teams.dropna(subset=["team_division"])
 nfl_teams = nfl_teams[(nfl_teams["team_name"] != "Washington Redskins") & (nfl_teams["team_name"] != "San Diego Chargers")]
+
+# Create a numpy array of team names and ID's
+team_array = np.array(nfl_teams[["team_name", "team_id"]])
+print(team_array)
+print(team_array.shape)
 
 # Join nfl_draft and nfl_teams to provide extra info on the drafting teams
 nfl_draft = nfl_draft.reset_index()
